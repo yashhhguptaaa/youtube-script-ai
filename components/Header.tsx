@@ -1,7 +1,8 @@
+import { BookOpen, FilePen } from "lucide-react";
 import Link from "next/link";
 
 // https://www.youtube.com/watch?v=8_usygEhn4k&t=356s
-// 33:10
+// 38:30
 const Header = () => {
   return (
     <header className="relative p-16 text-center">
@@ -18,7 +19,14 @@ const Header = () => {
       </Link>
 
       {/* Nav Icons */}
-      <div></div>
+      <div className="absolute -top-5 right-5 flex space-x-2">
+        <Link href={"/"}>
+          <FilePen className="h-8 w-8 lg:w-10 lg:h-10 mx-auto text-purple-500 mt-10 border border-purple-500 p-2 rounded-md hover:opacity-50 cursor-pointer" />
+        </Link>
+        <Link href={"/scripts"}>
+          <BookOpen className="h-8 w-8 lg:w-10 lg:h-10 mx-auto text-purple-500 mt-10 border border-purple-500 p-2 rounded-md hover:opacity-50 cursor-pointer" />
+        </Link>
+      </div>
     </header>
   );
 };
