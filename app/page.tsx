@@ -2,6 +2,7 @@ import Image from "next/image";
 import Logo from "@/images/logo.png";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import ScriptWriter from "@/components/ScriptWriter";
 
 export default function Home() {
   return (
@@ -15,7 +16,7 @@ export default function Home() {
           </Button>
         </div>
 
-        {/* Script Writer */}
+        <ScriptWriter />
       </section>
     </main>
   );

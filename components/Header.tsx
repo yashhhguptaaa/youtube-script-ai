@@ -1,8 +1,6 @@
 import { BookOpen, FilePen } from "lucide-react";
 import Link from "next/link";
 
-// https://www.youtube.com/watch?v=8_usygEhn4k&t=356s
-// 38:30
 const Header = () => {
   return (
     <header className="relative p-16 text-center">
