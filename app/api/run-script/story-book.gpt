@@ -2,7 +2,7 @@ tools: story-writer, story-illustrator, mkdir, sys.write, sys.read, sys.download
 description: Writes a children's book and generates illustrations for it.
 args: story: The story to write and illustrate. Can be a prompt or a complete story.
 args: pages: The number of pages to generate
-args: path: The path that the story should be written to
+args: f: The path that the story should be written to
 
 Do the following steps one after the other without skipping any or ending early:
 
@@ -36,7 +36,7 @@ Return your story, illustration style, and character descriptions.
 
 ---
 name: story-illustrator
-tools: github.com/sonnysangha/dalle-image-generation
+tools: https://github.com/sonnysangha/dalle-image-generation 
 description: Generates a illustration for a children's story
 temperature: 1
 args: text: The text of the page to illustrate

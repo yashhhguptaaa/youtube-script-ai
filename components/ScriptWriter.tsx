@@ -10,11 +10,14 @@ import {
   SelectValue,
 } from "./ui/select";
 import { Button } from "./ui/button";
+import { Frame } from "@gptscript-ai/gptscript";
+import renderEventMessage from "@/lib/renderEventMessage";
+import path from "path";
 
-const scriptsPath = "public/scripts/";
+const scriptsPath = "public/scripts";
 
 // https://www.youtube.com/watch?v=8_usygEhn4k&t=356s
-// 1:06:28
+// 1:43:41
 const ScriptWriter = () => {
   const [script, setScript] = useState("");
   const [pages, setPages] = useState<number>();
@@ -22,6 +25,7 @@ const ScriptWriter = () => {
   const [runStarted, setRunStarted] = useState(false);
   const [runFinished, setRunFinished] = useState<boolean | null>(null);
   const [currentTool, setCurrentTool] = useState<string>("");
+  const [events, setEvents] = useState<Frame[]>([]);
 
   const runScript = async () => {
     setRunStarted(true);
@@ -32,16 +36,69 @@ const ScriptWriter = () => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ script, pages, path: scriptsPath }),
+      body: JSON.stringify({
+        story: script,
+        pages,
+        path: scriptsPath,
+      }),
     });
-
+    console.log("response:", response);
     if (response.ok && response.body) {
+      console.log("Streaming Started");
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+
+      handleStream(reader, decoder);
     } else {
       setRunStarted(false);
       setRunFinished(true);
       console.log("Failed to start streaming...");
     }
   };
+
+  async function handleStream(
+    reader: ReadableStreamDefaultReader<Uint8Array>,
+    decoder: TextDecoder,
+  ) {
+    // Manage the stream from the API...
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break; // breaks out of the infinity loop
+
+      // The decoder is used to decode the Uint8Array into string.
+      const chunk = decoder.decode(value, { stream: true });
+
+      // We split the chunk into events by splitting it by the event: keyword.
+      const eventData = chunk
+        .split("\n\n")
+        .filter((line) => line.startsWith("event: "))
+        .map((line) => line.replace(/^event: /, ""));
+
+      // We parse the JSON data and update the state accordingly.
+      eventData.forEach((data) => {
+        try {
+          const parsedData = JSON.parse(data);
+
+          if (parsedData.type === "callProgress") {
+            setProgress(
+              parsedData.output[parsedData.output.length - 1].content,
+            );
+            setCurrentTool(parsedData.tool?.description || "");
+          } else if (parsedData.type === "callStart") {
+            setCurrentTool(parsedData.tool?.description || "");
+          } else if (parsedData.type === "runFinish") {
+            setRunFinished(true);
+            setRunStarted(false);
+          } else {
+            setEvents((prevEvents) => [...prevEvents, parsedData]);
+          }
+        } catch (error) {
+          console.log("data: ", data);
+          // console.log("Failed to parse JSON", error);
+        }
+      });
+    }
+  }
 
   return (
     <div className="flex flex-col container">
@@ -96,6 +153,16 @@ const ScriptWriter = () => {
               <span className="mr-5">{"--- [Current Tool] ---"}</span>
             </div>
           )}
+
+          {/* Render Events... */}
+          <div className="space-y-5">
+            {events.map((event, index) => (
+              <div key={index}>
+                <span className="mr-5">{">>"}</span>
+                {renderEventMessage(event)}
+              </div>
+            ))}
+          </div>
         </div>
       </section>
     </div>
