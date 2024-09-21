@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Textarea } from "./ui/textarea";
 import {
   Select,
@@ -13,6 +13,8 @@ import { Button } from "./ui/button";
 import { Frame } from "@gptscript-ai/gptscript";
 import renderEventMessage from "@/lib/renderEventMessage";
 import path from "path";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 const scriptsPath = "public/stories";
 
@@ -26,6 +28,7 @@ const ScriptWriter = () => {
   const [runFinished, setRunFinished] = useState<boolean | null>(null);
   const [currentTool, setCurrentTool] = useState<string>("");
   const [events, setEvents] = useState<Frame[]>([]);
+  const router = useRouter();
 
   const runScript = async () => {
     setRunStarted(true);
@@ -97,6 +100,23 @@ const ScriptWriter = () => {
       });
     }
   }
+
+  useEffect(() => {
+    if (runFinished) {
+      toast.success("Script generation finished successfully!", {
+        action: (
+          <Button
+            onClick={() => {
+              router.push("/scripts");
+            }}
+            className="bg-purple-500 ml-auto"
+          >
+            View Stories
+          </Button>
+        ),
+      });
+    }
+  }, [router, runFinished]);
 
   return (
     <div className="flex flex-col container">

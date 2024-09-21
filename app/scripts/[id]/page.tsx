@@ -38,6 +38,6 @@ export async function generateStaticParams() {
    * this will generate the static pages for each script.
    */
   return scripts.map((script) => ({
-    params: { id: encodeURIComponent(script.script) },
+    id: encodeURIComponent(script.script),
   }));
 }

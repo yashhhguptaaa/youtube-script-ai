@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Header from "@/components/Header";
+import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
   title: "Youtube Script Writer AI",
@@ -19,7 +20,7 @@ export default function RootLayout({
         {children}
       </body>
 
-      {/* Toaster   */}
+      <Toaster duration={8000} position="bottom-left" />
     </html>
   );
 }
