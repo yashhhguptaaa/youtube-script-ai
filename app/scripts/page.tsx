@@ -5,6 +5,9 @@ import Link from "next/link";
 import { BookOpen } from "lucide-react";
 import { getAllScripts } from "@/lib/scripts";
 
+// server side rendered this page
+export const revalidate = 0;
+
 const Scripts = () => {
   const scripts: Script[] = getAllScripts();
 
