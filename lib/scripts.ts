@@ -38,12 +38,12 @@ export function getAllScripts(): Script[] {
           pageMap[pageNumber].png = `/stories/${scriptFolder}/${file}`;
         }
       }
+    });
 
-      Object.keys(pageMap).forEach((pageNumber) => {
-        if (pageMap[pageNumber].txt && pageMap[pageNumber].png) {
-          pages.push(pageMap[pageNumber] as Page);
-        }
-      });
+    Object.keys(pageMap).forEach((pageNumber) => {
+      if (pageMap[pageNumber].txt && pageMap[pageNumber].png) {
+        pages.push(pageMap[pageNumber] as Page);
+      }
     });
 
     return {
