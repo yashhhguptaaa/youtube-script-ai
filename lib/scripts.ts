@@ -14,6 +14,7 @@ export function getAllScripts(): Script[] {
   }
 
   const scriptsFolder = fs.readdirSync(scriptsDirectory);
+
   const scripts: Script[] = scriptsFolder.map((scriptFolder) => {
     const scriptPath = path.join(scriptsDirectory, scriptFolder);
     const files = fs.readdirSync(scriptPath);
@@ -51,7 +52,10 @@ export function getAllScripts(): Script[] {
     };
   });
 
-  return scripts;
+  return scripts.filter((script) => script.pages.length > 0);
 }
 
-export function getScript(script: string): Script | undefined {}
+export function getScript(script: string): Script | undefined {
+  const scripts = getAllScripts();
+  return scripts.find((s) => s.script === script);
+}
