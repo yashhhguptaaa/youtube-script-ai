@@ -46,9 +46,8 @@ const ScriptWriter = () => {
     if (response.ok && response.body) {
       console.log("Streaming Started");
       const reader = response.body.getReader();
-      const decoder = new TextDecoder();
 
-      handleStream(reader, decoder);
+      handleStream(reader);
     } else {
       setRunStarted(false);
       setRunFinished(true);
@@ -56,10 +55,9 @@ const ScriptWriter = () => {
     }
   };
 
-  async function handleStream(
-    reader: ReadableStreamDefaultReader<Uint8Array>,
-    decoder: TextDecoder,
-  ) {
+  async function handleStream(reader: ReadableStreamDefaultReader<Uint8Array>) {
+    const decoder = new TextDecoder();
+
     // Manage the stream from the API...
     while (true) {
       const { done, value } = await reader.read();
@@ -68,7 +66,7 @@ const ScriptWriter = () => {
       // The decoder is used to decode the Uint8Array into string.
       const chunk = decoder.decode(value, { stream: true });
 
-      // We split the chunk into events by splitting it by the event: keyword.
+      // We split the chunk into events by splitting it by the "event: " keyword.
       const eventData = chunk
         .split("\n\n")
         .filter((line) => line.startsWith("event: "))
