@@ -1,3 +1,4 @@
+import Script from "@/components/Script";
 import { getAllScripts, getScript } from "@/lib/scripts";
 import { notFound } from "next/navigation";
 import React from "react";
@@ -36,10 +37,7 @@ export async function generateStaticParams() {
    * we need to return an array of objects with the id property set to script id.
    * this will generate the static pages for each script.
    */
-  return {
-    paths: scripts.map((script) => ({
-      params: { id: encodeURIComponent(script.script) },
-    })),
-    fallback: false,
-  };
+  return scripts.map((script) => ({
+    params: { id: encodeURIComponent(script.script) },
+  }));
 }
