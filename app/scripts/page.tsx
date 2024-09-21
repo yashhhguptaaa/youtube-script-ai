@@ -11,8 +11,6 @@ export const revalidate = 0;
 const Scripts = () => {
   const scripts: Script[] = getAllScripts();
 
-  console.log("scripts:", scripts);
-
   return (
     <div className="p-10 max-w-7xl mx-auto">
       {scripts.length === 0 && <p>No scripts found...</p>}

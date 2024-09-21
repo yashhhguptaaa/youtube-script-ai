@@ -1,7 +1,7 @@
 "use client";
 
 import { Script as ScriptType } from "@/types/stories";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Carousel,
   CarouselContent,
@@ -19,6 +19,22 @@ type ScriptProps = {
 
 const Script = ({ script }: ScriptProps) => {
   const [api, setApi] = useState<CarouselApi>();
+  const [current, setCurrent] = useState(0);
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    if (!api) {
+      return;
+    }
+
+    setCount(api.scrollSnapList().length);
+    setCurrent(api.selectedScrollSnap() + 1);
+
+    api.on("select", () => {
+      setCurrent(api.selectedScrollSnap() + 1);
+    });
+  }, [api]);
+
   return (
     <div>
       <div className="px-20">
@@ -26,9 +42,9 @@ const Script = ({ script }: ScriptProps) => {
           <CarouselContent>
             {script.pages.map((page, index) => (
               <CarouselItem key={index}>
-                <Card>
-                  <h2>{script.script}</h2>
-                  <CardContent>
+                <Card className="p-5 md:p-10 border">
+                  <h2 className="text-center text-gray-400">{script.script}</h2>
+                  <CardContent className="p-5">
                     <Image
                       src={page.png}
                       alt={`Page ${index + 1} image`}
@@ -36,8 +52,14 @@ const Script = ({ script }: ScriptProps) => {
                       height={500}
                       className="w-80 h-80 xl:w-[500px] xl:h-[500px] rounded-3xl mx-auto float-right p-5 xl:order-last"
                     />
-                    <p>{page.txt}</p>
+                    <p className="font-semibold text-xl first-letter:text-3xl whitespace-pre-wrap">
+                      {page.txt}
+                    </p>
                   </CardContent>
+
+                  <p className="text-center text-gray-400">
+                    Page {current} of {count}
+                  </p>
                 </Card>
               </CarouselItem>
             ))}
