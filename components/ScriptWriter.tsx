@@ -14,7 +14,7 @@ import { Frame } from "@gptscript-ai/gptscript";
 import renderEventMessage from "@/lib/renderEventMessage";
 import path from "path";
 
-const scriptsPath = "public/scripts";
+const scriptsPath = "public/stories";
 
 // https://www.youtube.com/watch?v=8_usygEhn4k&t=356s
 // 1:43:41

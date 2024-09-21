@@ -1,20 +1,15 @@
 import { NextRequest } from "next/server";
 import { RunEventType, RunOpts } from "@gptscript-ai/gptscript";
 import g from "@/lib/gptScriptInstance";
-import path from "path";
 
 const scripts = "app/api/run-script/story-book.gpt";
 export async function POST(request: NextRequest) {
-  const { story, pages, path: scriptPath } = await request.json();
-  console.log({ story, pages, scriptPath });
+  const { story, pages, path } = await request.json();
 
-  // Resolve the absolute path
-  const resolvedPath = scriptPath;
-
-  // Example CLI Command: gptscript ./story-book.gpt ---story "A robot and a human who became friends" ---pages 5 --path ./scripts
+  // Example CLI Command: gptscript ./story-book.gpt ---story "A robot and a human who became friends" ---pages 5 --path ./stories
   const opts: RunOpts = {
     disableCache: true,
-    input: `---story ${story} ---pages ${pages} --path ${resolvedPath}`,
+    input: `--story ${story} --pages ${pages} --path ${path}`,
   };
 
   try {
@@ -32,6 +27,7 @@ export async function POST(request: NextRequest) {
           await run.text();
           controller.close();
         } catch (error) {
+          console.log("route me error aaraha hai");
           controller.error(error);
           console.error("Error:", error);
         }
@@ -46,7 +42,6 @@ export async function POST(request: NextRequest) {
       },
     });
   } catch (error) {
-    console.log("route me error aaraha hai");
     return new Response(JSON.stringify({ error: error }), {
       status: 500,
     });
