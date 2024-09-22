@@ -67,3 +67,11 @@
     @apply bg-background text-foreground;
   }
 }
+
+.grad {
+  border-image: linear-gradient(45deg, #2563eb, #48bb78) 1;
+}
+
+.bg-golden-gradient {
+  background: linear-gradient(to right, #ffd700, #ffc700, #ffa500, #ff8c00);
+}

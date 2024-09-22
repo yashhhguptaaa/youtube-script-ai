@@ -19,10 +19,10 @@ const Scripts = () => {
           <Link
             key={script.script + index}
             href={`/scripts/${script.script}`}
-            className="border rounded-lg cursor-pointer hover:shadow-lg hover:border-purple-500 transition-all duration-300 ease-in-out"
+            className="border rounded-lg cursor-pointer hover:shadow-lg hover:border-blue-500 transition-all duration-300 ease-in-out"
           >
             <div className="relative">
-              <p className="absolute flex items-center top-0 right-0 bg-white text-purple-500 font-bold p-3 rounded-lg m-2 text-sm">
+              <p className="absolute flex items-center top-0 right-0 bg-golden-gradient text-white font-bold p-3 rounded-lg m-2 text-sm">
                 <BookOpen className="h-4 w-4 mr-1" />
                 {script.pages.length === 1
                   ? "1 Page"
