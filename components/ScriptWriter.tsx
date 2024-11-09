@@ -12,7 +12,7 @@ import {
 import { Button } from "./ui/button";
 import { Frame } from "@gptscript-ai/gptscript";
 import renderEventMessage from "@/lib/renderEventMessage";
-import path from "path";
+
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
@@ -45,7 +45,7 @@ const ScriptWriter = () => {
         path: scriptsPath,
       }),
     });
-    console.log("response:", response);
+
     if (response.ok && response.body) {
       console.log("Streaming Started");
       const reader = response.body.getReader();
